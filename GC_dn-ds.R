@@ -1,5 +1,8 @@
 library(dplyr)
 library(ggplot2)
+library(outliers)
+library(EnvStats)
+
 
 #### GC DIFFERENCES ####
 
@@ -51,7 +54,7 @@ SIGN.test(GC$V4, mean = 0, alternative = "greater")
 
 ### DN/DS RATIOS ###
 
-dn_ds_all <- read.delim("dn_ds_ratios.txt",header = F)
+dn_ds_all <- read.delim("../dn_ds_ratios.txt",header = F)
 
 dn_ds_purifying <- dn_ds_all %>% 
   filter(V2 < 1 & V3 < 1) %>% 
@@ -59,7 +62,7 @@ dn_ds_purifying <- dn_ds_all %>%
 
 ggplot(data = dn_ds_purifying, mapping = aes(x = V4)) + geom_histogram( bins = 250, color = "gray23", alpha = 0.5) + 
   xlab(bquote(Delta~dn/ds [ Asex-Sex])) + ylab("Frequency") + xlim(-0.2,0.2) +
-  theme_classic() + geom_vline(xintercept = mean(dn_ds_purifying$V4), color = "red", alpha = 0.5)
+  theme_classic() + geom_vline(xintercept = mean(dn_ds_purifying$V4), color = "red", alpha = 0.5) 
 
 ggsave("pairwise_dn_ds.png", dpi = 300, height = 4, width = 5)
 
@@ -77,16 +80,41 @@ t.test(dn_ds_purifying$V2, dn_ds_purifying$V3, paired = T, alternative = "greate
 #  mean of the differences 
 # 0.0007959147
 
-wilcox.test(dn_ds_purifying$V2, dn_ds_purifying$V3,paired = T, alternative = "greater")
+wilcox.test(dn_ds_purifying$V2, dn_ds_purifying$V3,paired = T)
 
 # Wilcoxon signed rank test with continuity correction
 # data:  dn_ds_purifying$V2 and dn_ds_purifying$V3
 # V = 6479921, p-value = 0.0002455
 # alternative hypothesis: true location shift is greater than 0
 
+
+## Get outer observations in pairwise comparisons
+
+is_outlier <- function(x) {
+  return(x < quantile(x, 0.25) - 1.5 * IQR(x) | x > quantile(x, 0.75) + 1.5 * IQR(x))
+} # use function to determine outlier candidates 
+
+sub <- is_outlier(dn_ds_purifying$V4) 
+
+cand_outliers <- dn_ds_purifying[sub,] #subset dataframe to select candidate outliers
+
+length(cand_outliers$V4) #502 candidate outliers 
+
+test <- rosnerTest(dn_ds_purifying$V4, k=502)
+test$all.stats
+
+# 99 observations are outliers based on Rosner test 
+
+dn_ds_pur_test <- dn_ds_purifying
+
+dn_ds_pur_test <- rename(dn_ds_pur_test, Value=V4)
+
+df <- inner_join(dn_ds_pur_test, test$all.stats) %>% 
+  filter(Outlier == "TRUE")
+
 # DN/DS Hypothesis testing
 
-likelihoods <- read.delim("likelihoods.txt", header =T)
+likelihoods <- read.delim("../likelihoods.txt", header =T)
 
 likelihoods$np <- rep(c(6,7,8,9,9), length= length(likelihoods$Ortholog))
 likelihoods$df <- rep(c(0,1,2,3,3), length= length(likelihoods$Ortholog))
