@@ -109,8 +109,12 @@ dn_ds_pur_test <- dn_ds_purifying
 
 dn_ds_pur_test <- rename(dn_ds_pur_test, Value=V4)
 
-df <- inner_join(dn_ds_pur_test, test$all.stats) %>% 
+all_outliers <- inner_join(dn_ds_pur_test, test$all.stats) %>% 
   filter(Outlier == "TRUE")
+
+pos_outliers <- filter(all_outliers, Value > 0)
+
+neg_outliers <- filter(all_outliers, Value < 0)
 
 # DN/DS Hypothesis testing
 
