@@ -17,3 +17,13 @@ Retrieve single copy orthologs for OrthoFinder output and extract corresponding 
 
 # GC Content Differences
 
+<TT> for file in *.fasta; do python GC_content.py "$file"; done </TT> 
+
+Load output file "GC_dif.txt" into R script "GC_diff.R" for comparison. 
+
+# Calculate dN/dS ratios 
+
+<b> Pairwise dN/dS: </b>  
+
+
+Load output file "dn_ds_ratios.txt" into R script "dn_ds_diff.R" for comparion. 
