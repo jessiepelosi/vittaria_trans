@@ -18,7 +18,7 @@ gf_count_con <- gf_count %>% #checked against GUI results
   filter(NDUV.v.appalachiana <= (0.5*X3)) %>%
   filter(NDUV.v.appalachiana == 1)
   
-OGs_contracted <- select(gf_count_con, Family)
+OGs_cont_NDUV <- select(gf_count_con, Family)
 
 gf_count_gain <- gf_count %>% 
   filter(Gains > 0) %>%
