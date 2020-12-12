@@ -8,7 +8,6 @@ All transcriptome assemblies are from the One Thousand Plant Transcriptome Initi
 Generate pep and CDS files using TransDecoder v. (Haas et al. 2014):
 
 <TT> TransDecoder.LongOrfs -t [file.fasta] 
-  
   TransDecoder.Predict -t [file.fasta] </TT>
 
 Using OrthoFinder v. 2.3.11 (Emms and Kelly 2015, 2019) generate orthogroups as follows: 
@@ -72,10 +71,8 @@ Load Orthogroups.GeneCount.tsv output file from OrthoFinder (for Pteridacaeae + 
 Use wgd (Zwaenepoel and Van de Peer 2019) to generate paralog age distributions (Ks) plots for <i> V. appalachiana </i> and <i> V. lineata </i>, the two known polyploids (based on chromosome counts, Gastony 1977). 
 
 <TT> wgd mcl -s [NDUV/SKYV].cds --cds --mcl
-  
-<TT>  wgd ksd [NDUV/SKYV].mcl [NDUV/SKYV].cds
-  
-  wgd mix --method bgmm [NDUV/SKYV].cds.ks.tsv </TT>
+    wgd ksd [NDUV/SKYV].mcl [NDUV/SKYV].cds
+    wgd mix --method bgmm [NDUV/SKYV].cds.ks.tsv </TT>
   
 Import the .tsv files into "ks_plots.R". 
 
@@ -94,10 +91,8 @@ End up with 540 OGs.
 Extract CDS, align with MACSE, generate gene trees with IQTREE: 
 
 <TT> python extract_cds.py OG#######.pep BMJR.cds FLTD.cds KJZG.cds POPJ.cds UJTT.cds WQML.cds YCKE.cds DCDT.cds GSXD.cds NDUV.cds SKYV.cds WCLG.cds XDDT.cds </TT> 
-
-<TT> java -Xms4000m -jar macse_v2.04.jar -prog alignSequences -seq OG#######.cds </TT>
-
-<TT> iqtree2 -s OG#######.cds_NT --alrt 1000 -B 1000 -m TEST --redo </TT> 
+ java -Xms4000m -jar macse_v2.04.jar -prog alignSequences -seq OG#######.cds </TT>
+ iqtree2 -s OG#######.cds_NT --alrt 1000 -B 1000 -m TEST --redo </TT> 
 
 Re-root trees with Newick Utilities v. 1.6 (Junier and Zdobnov 2010):
 
@@ -106,9 +101,7 @@ Re-root trees with Newick Utilities v. 1.6 (Junier and Zdobnov 2010):
 Get orthogroups with certain topologies. 
 
 <TT> grep -r "scaffold\-SKYV\-[A-Za-z0-9\.\_\:\-]*,scaffold\-NDUV\-[A-Za-z0-9\.\_\:\-]*" *.tre -o > v_lin_v_app_dups.txt  #139, remove duplicates, ends up at 131 trees 
-
-<TT> grep -r "scaffold\-NUDV\-[A-Za-z0-9\.\_\:\-]*,scaffold\-NDUV\-[A-Za-z0-9\.\_\:\-]*" *.tre -o > v_app_v_app_dups.txt #56, no duplicates 
-
-grep -r "scaffold\-NUDV\-[A-Za-z0-9\.\_\:\-]*,scaffold\-NDUV\-[A-Za-z0-9\.\_\:\-]*" *.tre -o > v_app_v_lin_dups.txt #685, remove duplicates, ends up at 427 trees </TT>
+     grep -r "scaffold\-NUDV\-[A-Za-z0-9\.\_\:\-]*,scaffold\-NDUV\-[A-Za-z0-9\.\_\:\-]*" *.tre -o > v_app_v_app_dups.txt #56, no duplicates 
+     grep -r "scaffold\-NUDV\-[A-Za-z0-9\.\_\:\-]*,scaffold\-NDUV\-[A-Za-z0-9\.\_\:\-]*" *.tre -o > v_app_v_lin_dups.txt #685, remove duplicates, ends up at 427 trees </TT>
  
 Remove overlapping orthogroups in "v_lin_v_app_dups.txt" and "v_app_v_lin_dups.txt". In total, 457 trees support (((<i> V_appalachiana, V_lineata </i>), (<i> V_appalachiana, V_lineta </i>)), <i> Asplenium_platyneuron </i>), 56 support (((<i>V_appalachiana, V_appalachiana</i>), (<i>V_lineta, V_lineata</i>)),<i>Asplenium_platyneuron</i>). 
