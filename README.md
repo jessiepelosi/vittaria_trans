@@ -7,9 +7,9 @@ All transcriptome assemblies are from the One Thousand Plant Transcriptome Initi
 
 Generate pep and CDS files using TransDecoder v. (Haas et al. 2014):
 
-<TT> TransDecoder.LongOrfs -t [file.fasta] 
-  
-  TransDecoder.Predict -t [file.fasta] </TT>
+<TT> TransDecoder.LongOrfs -t [file.fasta]  </TT>
+
+<TT> TransDecoder.Predict -t [file.fasta] </TT>
 
 Using OrthoFinder v. 2.3.11 (Emms and Kelly 2015, 2019) generate orthogroups as follows: 
 
