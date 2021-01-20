@@ -85,11 +85,11 @@ Import the .tsv files into "ks_plots.R".
 
 <b> Determine topology of duplicates </b> 
 
-Get orthogroups where there are exactly two copies of <i> V. appalachiana </i> and <i> V. lineata </i> and one copy of the outgroup <i> Asplenium platyneuron </i>. 
+Get orthogroups where there are exactly two copies of <i> V. appalachiana </i> and <i> V. lineata </i> and one copy of the outgroup <i> Asplenium platyneuron </i>. Given the placement of WGDs suggested by MAPs, we also examined the topology of duplicates where there were two copies of <i> V. appalachiana </i> and <i> V. lineata </i> and one copy of <i> Adiantum aleuticum </i>. 
 
-<TT> bash get_duplicate_trees.sh  </TT>
+<TT> bash get_duplicate_trees.sh  #or bash get_duplicate_trees_4.sh for Adiantum</TT>
 
-End up with 540 OGs. 
+End up with 540 OGs with <i> Asplenium </i> as the outgroup, and 471 OGs with <i> Adiantum </i> as the outgroup. 
 
 Extract CDS, align with MACSE, generate gene trees with IQTREE: 
 
