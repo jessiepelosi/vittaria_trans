@@ -117,14 +117,26 @@ Extract CDS, align with MACSE, generate gene trees with IQTREE:
 
 Re-root trees with Newick Utilities v. 1.6 (Junier and Zdobnov 2010):
 
-<TT> for file in *.treefile; do nw_reroot “$file” KJZG > “$file”_rerooted.tre; done </TT> 
+<TT> for file in *.treefile; do nw_reroot “$file” KJZG > “$file”_rerooted.tre; done #Use WCLG for Adiantum as outgroup </TT> 
 
 Get orthogroups with certain topologies. 
 
+For <i> Asplenium </i> as outgroup: 
+
 <TT> grep -r "scaffold\-SKYV\-[A-Za-z0-9\.\_\:\-]*,scaffold\-NDUV\-[A-Za-z0-9\.\_\:\-]*" *.tre -o > v_lin_v_app_dups.txt  #139, remove duplicates, ends up at 131 trees </TT>
 
-<TT> grep -r "scaffold\-NUDV\-[A-Za-z0-9\.\_\:\-]*,scaffold\-NDUV\-[A-Za-z0-9\.\_\:\-]*" *.tre -o > v_app_v_app_dups.txt #56, no duplicates </TT>
+<TT> grep -r "scaffold\-NDUV\-[A-Za-z0-9\.\_\:\-]*,scaffold\-NDUV\-[A-Za-z0-9\.\_\:\-]*" *.tre -o > v_app_v_app_dups.txt #56, no duplicates </TT>
 
-<TT> grep -r "scaffold\-NUDV\-[A-Za-z0-9\.\_\:\-]*,scaffold\-NDUV\-[A-Za-z0-9\.\_\:\-]*" *.tre -o > v_app_v_lin_dups.txt #685, remove duplicates, ends up at 427 trees </TT>
+<TT> grep -r "scaffold\-NDUV\-[A-Za-z0-9\.\_\:\-]*,scaffold\-SKYV\-[A-Za-z0-9\.\_\:\-]*" *.tre -o > v_app_v_lin_dups.txt #685, remove duplicates, ends up at 427 trees </TT>
  
-Remove overlapping orthogroups in "v_lin_v_app_dups.txt" and "v_app_v_lin_dups.txt". In total, 457 trees support (((<i> V_appalachiana, V_lineata </i>), (<i> V_appalachiana, V_lineta </i>)), <i> Asplenium_platyneuron </i>), 56 support (((<i>V_appalachiana, V_appalachiana</i>), (<i>V_lineta, V_lineata</i>)),<i>Asplenium_platyneuron</i>). 
+Remove overlapping orthogroups in "v_lin_v_app_dups.txt" and "v_app_v_lin_dups.txt". In total, 457 trees support (((<i> V. appalachiana, V. lineata </i>), (<i> V. appalachiana, V. lineta </i>)), <i> Asplenium platyneuron </i>), 56 support (((<i>V. appalachiana, V. appalachiana</i>), (<i>V. lineta, V. lineata</i>)),<i>Asplenium platyneuron</i>). 
+
+For <i> Adiantum </i> as outgroup: 
+
+<TT> grep -r "scaffold\-SKYV\-[A-Za-z0-9\.\_\:\-]*,scaffold\-NDUV\-[A-Za-z0-9\.\_\:\-]*" *.tre -o > v_lin_v_app_dups.txt  #130, remove duplicates, ends up at 120 trees </TT>
+
+<TT> grep -r "scaffold\-NDUV\-[A-Za-z0-9\.\_\:\-]*,scaffold\-NDUV\-[A-Za-z0-9\.\_\:\-]*" *.tre -o > v_app_v_app_dups.txt #53, no duplicates </TT>
+
+<TT> grep -r "scaffold\-NDUV\-[A-Za-z0-9\.\_\:\-]*,scaffold\-SKYV\-[A-Za-z0-9\.\_\:\-]*" *.tre -o > v_app_v_lin_dups.txt #596, remove duplicates, ends up at 367 trees </TT>
+ 
+Remove overlapping orthogroups in "v_lin_v_app_dups.txt" and "v_app_v_lin_dups.txt". In total, 396 trees support (((<i> V. appalachiana, V. lineata </i>), (<i> V. appalachiana, V. lineta </i>)), <i> Adiantum aleuticum</i>), 53 support (((<i>V. appalachiana, V. appalachiana</i>), (<i>V. lineta, V. lineata</i>)),<i> Adiantum aleuticum </i>). 
