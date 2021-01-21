@@ -5,7 +5,7 @@ All transcriptome assemblies are from the One Thousand Plant Transcriptome Initi
 
 # Orthology Determination and Alignment
 
-Generate pep and CDS files using TransDecoder v. (Haas et al. 2014):
+Generate pep and CDS files using TransDecoder v. 5.5 (Haas et al. 2014):
 
 <TT> TransDecoder.LongOrfs -t [file.fasta]  </TT>
 
