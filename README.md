@@ -81,7 +81,23 @@ Import the .tsv files into "ks_plots.R".
 
 <b> MAPS </b> 
 
+Select taxa for MAPS analysis (tree must be ladderized, thus several sister taxa must be removed from the main species tree). Then select orthogroups where at least one gene copy is present for each taxon. MAPS is described in Li et al. 2015 and Li et al. 2018, and the source code can be found here: https://bitbucket.org/barkerlab/maps/src/master/
 
+<TT> bash get_MAPS_OGs.sh </TT> 
+
+Create gene trees for each orthogroup.  
+
+<TT> python extract_cds.py OG#######.pep FLTD.cds KJZG.cds WQML.cds DCDT.cds NDUV.cds SKYV.cds WCLG.cds </TT> 
+ 
+<TT> java -Xms4000m -jar macse_v2.04.jar -prog alignSequences -seq OG#######.cds </TT>
+
+<TT> iqtree2 -s OG#######.cds_NT --alrt 1000 -B 1000 -m TEST --redo </TT> 
+
+Rename tip labels, remove bootstrap support values, and concatenate into one file (pteridaceae_noBS.tre). 
+
+Run MAPS with the list file (ladderized species tree) and gene tree file. 
+
+<TT> perl maps.pl --l pteridaceae.list --t pteridaceae_noBS.tre </TT> 
 
 <b> Determine topology of duplicates </b> 
 
