@@ -1,4 +1,5 @@
-''' Purpose: run CodeMl for given alignments 
+''' 
+Purpose: run CodeMl for given alignments 
 	Usage: python codeml.py input_fasta species_tree working_directory
 	Arguments:
 		Input_fasta: input gene alignment  
