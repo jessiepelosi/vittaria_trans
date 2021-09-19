@@ -1,5 +1,5 @@
 # <i> Vittaria appalachiana </i> comparative transcriptomics 
-Code for "Life without a sporophyte: the population genetics and comparative transcriptomics of a gametophyte-only fern" by Jessie A. Pelosi, W. Brad Barbazuk, and Emily B. Sessa. 
+Code for  "Life Without a Sporophyte: comparative transcriptomics elucidate the origin and consequences of asexuality in a gametophyte-only fern" by Jessie A. Pelosi, W. Brad Barbazuk, and Emily B. Sessa. 
 
 All transcriptome assemblies are from the One Thousand Plant Transcriptome Initiatve (2019) and available at: https://datacommons.cyverse.org/browse/iplant/home/shared/commons_repo/curated/oneKP_capstone_2019
 
