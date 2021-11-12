@@ -147,8 +147,20 @@ awk -F , 'FNR == 3{print $3}' 4000_subsamp.*/*.csv >> MAPS_simulations.txt
 awk -F , 'FNR == 4{print $3}' 4000_subsamp.*/*.csv >> MAPS_simulations.txt
 awk -F , 'FNR == 5{print $3}' 4000_subsamp.*/*.csv >> MAPS_simulations.txt
 awk -F , 'FNR == 6{print $3}' 4000_subsamp.*/*.csv >> MAPS_simulations.txt
+```
+
+Summarize MAPS analyses on simulated data and then run Fisher's exact tests. 
+
+```
+cd null_sims/
+
+python summarize_MAPS.py 5 1000 Pteridaceae
 
 perl runFisher_null.pl
+
+cd ../pos_sims/
+
+python summarize_MAPS.py 5 1000 Pteridaceae 
 
 perl runFisher_positive.pl 
 ```
