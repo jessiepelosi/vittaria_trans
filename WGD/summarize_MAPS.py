@@ -77,6 +77,6 @@ temp_df['DupPer'] = temp_df['DupPer'].astype(str) +"%" # Add % back, needs to be
 temp_df['TotalNoSubtrees'] = temp_df['DupNo']+temp_df['NonDupNo'] # Make new column for total number of subtrees analyzed
 temp_df['NoTrees'] = NoTrees # Make new column for total number of trees analyze in each maps analysis
 print("Writing CSV.")
-temp_df.to_csv(ListName + ".meanMapsOut.csv",index=False) # Write to CSV!
+temp_df.to_csv(ListName + ".mapsMeanOut.csv",index=False) # Write to CSV!
 
 print("Done! Program finished successfully.")
