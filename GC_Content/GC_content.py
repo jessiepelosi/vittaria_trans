@@ -4,7 +4,9 @@ Usage: python GC_content.py input_fasta
 Arguments:
 	Input_fasta: aligned fasta file that you want to extract GC content from, contains at least one cds
 
-Last Modidied on 3 December 2020 
+Last Modidied 3 December 2022
+
+** This should be used with the Vittaria-only ortholog set where there are only two sequences in each orthogroup **
 
 '''
 
