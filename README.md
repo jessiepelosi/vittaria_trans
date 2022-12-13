@@ -1,13 +1,14 @@
 # <i> Vittaria appalachiana </i> comparative transcriptomics 
 Code for  "Life without a sporophyte: the origin and consequences of asexual reproduction in a gametophyte-only fern" by Jessie A. Pelosi, W. Brad Barbazuk, and Emily B. Sessa. 
 
-All transcriptome assemblies are from the One Thousand Plant Transcriptome Initiatve (2019) and available at: https://datacommons.cyverse.org/browse/iplant/home/shared/commons_repo/curated/oneKP_capstone_2019
+All transcriptome assemblies are from the One Thousand Plant Transcriptome Initiatve (2019) and available [here](https://datacommons.cyverse.org/browse/iplant/home/shared/commons_repo/curated/oneKP_capstone_2019). 
 
-This repository is divided into four folders: 
+This repository is divided into five folders: 
 1. [GC_content](https://github.com/jessiepelosi/vittaria_trans/tree/main/GC_Content)
 2. [dN/dS](https://github.com/jessiepelosi/vittaria_trans/tree/main/dNdS)
 3. [genefams](https://github.com/jessiepelosi/vittaria_trans/tree/main/genefams)
 4. [WGD](https://github.com/jessiepelosi/vittaria_trans/tree/main/WGD)
+5. [TEs](https://github.com/jessiepelosi/vittaria_trans/tree/main/TEs)
 
 The process for generating of orthologs for use in downstream anlayses is below. 
 
