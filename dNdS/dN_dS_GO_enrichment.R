@@ -1,4 +1,10 @@
-## GO Enrichment Tests for dN/dS
+###################################
+#  dN_dS_GO_enrichment.R          #
+#  GO Enrichment Tests for dN/dS  #
+# Jessie Pelosi                   #
+# Dec 8 2022                      # 
+###################################
+
 library(topGO)
 library(dplyr)
 
@@ -8,37 +14,36 @@ NDUV <- read.delim("NDUV_all_contigs_terms.txt", header = F)
 NDUV <- NDUV %>% 
   dplyr::select(V1, V2, V4, V6, V8, V10, V12, V14, V16) # get columns with GO terms only
   
-SKYV <- read.delim("SKYV_all_contigs_terms", header = F)
-SKYV <- SKYV %>% 
-  dplyr::select(V1, V2, V4, V6, V8, V10, V12, V14, V16, V18, V20, V22, V24, V26, V28, V30, V32, V34, V36, V38) # get columns with GO terms only 
+#SKYV <- read.delim("SKYV_all_contigs_terms", header = F)
+#SKYV <- SKYV %>% 
+#  dplyr::select(V1, V2, V4, V6, V8, V10, V12, V14, V16, V18, V20, V22, V24, V26, V28, V30, V32, V34, V36, V38) # get columns with GO terms only 
 
 NDUV$V18 <- NA; NDUV$V20 <- NA; NDUV$V22 <- NA; NDUV$V24 <- NA; NDUV$V26 <- NA;NDUV$V28 <- NA;
 NDUV$V30 <- NA; NDUV$V32 <- NA; NDUV$V34 <- NA; NDUV$V36 <- NA; NDUV$V38 <- NA
-NDUV_SKYV <- rbind(SKYV,NDUV)
+#NDUV_SKYV <- rbind(SKYV,NDUV)
 
-purifying_dnds <- read.delim("all_dn_ds_pur_contigs.txt", header = F)
+purifying_dnds <- read.delim("pur_contigs.txt", header = F)
 
 purifying_GO <- NDUV_SKYV %>% 
   filter(V1 %in% purifying_dnds$V1)
 
-write.table(x= purifying_GO, "purifying_to_edit.txt")
+write.table(x= purifying_GO, "purifying_to_edit.txt", quote = F) #edit so each GO is on a single line 
 
-pos_outliers <- read.delim("postive_outliers_contigs.txt", header = F)
+pos_outliers <- read.delim("pos_contigs.txt", header = F)
 
-pos_outliers_GO <- NDUV_SKYV %>% 
+pos_outliers_GO <- NDUV %>% 
   filter(V1 %in% pos_outliers$V1)
 
 write.table(x= pos_outliers_GO, "positive_outliers_to_edit.txt")
+neg_outliers <- read.delim("neg_contigs.txt", header = F)
 
-neg_outliers <- read.delim("negative_outliers_contigs.txt", header = F)
+#neg_outliers_GO <- NDUV_SKYV %>% 
+#  filter(V1 %in% neg_outliers$V1)
 
-neg_outliers_GO <- NDUV_SKYV %>% 
-  filter(V1 %in% neg_outliers$V1)
-
-write.table(x = neg_outliers_GO, "negative_outliers_to_edit.txt")
+#write.table(x = neg_outliers_GO, "negative_outliers_to_edit.txt")
   
-pos_GO <- read.delim("pos_outliers_GO_terms.txt", header = F)
-neg_GO <- read.delim("negative_outliers_GO_terms.txt", header = F)
+#pos_GO <- read.delim("pos_outliers_GO_terms.txt", header = F)
+#neg_GO <- read.delim("negative_outliers_GO_terms.txt", header = F)
 geneID2GO <- readMappings(file = "purifying_to_edit.txt")
 
 str(geneID2GO)
@@ -64,13 +69,13 @@ sig_genes_BP <- sigGenes(pos_GO_data_BP)
 str(sig_genes_BP)
 #Number of significantly enriched genes for Biological Processes 
 numSigGenes(pos_GO_data_BP)
-#16
+#121
 
 #Run Fisher's Exact Test for Biological Processes 
 #Note that this does not correct for multiple comparisons 
 BP_result_Fisher <- runTest(pos_GO_data_BP, algorithm = "classic", statistic = "fisher")
 BP_result_Fisher
-#16 terms have raw p<0.01
+#6 terms have raw p<0.01, 20 with p<0.05 
 
 BP_list <- usedGO(object = pos_GO_data_BP)
 
@@ -81,7 +86,9 @@ BP_corrected <- as.data.frame(BP_corrected)
 #no terms are significantly enriched following FDR adjustment
 
 showSigOfNodes(pos_GO_data_BP, score(BP_result_Fisher), firstSigNodes = 10, useInfo = 'all')
-printGraph(pos_GO_data_BP, BP_result_Fisher, firstSigNodes = 10, fn.prefix = "tGO", useInfo = 'all')
+printGraph(pos_GO_data_BP, BP_result_Fisher, firstSigNodes = 10, fn.prefix = "tGODec8", useInfo = 'all')
+
+write.table(BP_fisher_only, file = "BP_fisher_only_nodesize_10_dec10.txt") 
 
 ## CC POSITIVE dN/dS DIFFERENCE
 
@@ -93,7 +100,7 @@ sig_genes_CC <- sigGenes(pos_GO_data_CC)
 str(sig_genes_CC)
 #Number of significantly enriched genes for Biological Processes 
 numSigGenes(pos_GO_data_CC)
-#19
+#264
 
 #Run Fisher's Exact Test for Biological Processes 
 #Note that this does not correct for multiple comparisons 
@@ -104,7 +111,7 @@ CC_result_Fisher
 CC_list <- usedGO(object = pos_GO_data_CC)
 
 CC_fisher_only <- GenTable(pos_GO_data_CC, classicFisher = CC_result_Fisher, orderBy = "classicFisher", ranksOf = "classicFisher", topNodes = length(CC_list))
-#write.table(BP_fisher_only, file = "BP_fisher_only_nodesize_10.txt") 
+write.table(CC_fisher_only, file = "CC_fisher_only_nodesize_10_Dec10.txt") 
 
 CC_corrected <- p.adjust(CC_fisher_only$classicFisher, method = "fdr")
 CC_corrected <- as.data.frame(CC_corrected)
@@ -123,18 +130,18 @@ sig_genes_MF <- sigGenes(pos_GO_data_MF)
 str(sig_genes_MF)
 #Number of significantly enriched genes for Biological Processes 
 numSigGenes(pos_GO_data_MF)
-#17
+#27
 
 #Run Fisher's Exact Test for Biological Processes 
 #Note that this does not correct for multiple comparisons 
 MF_result_Fisher <- runTest(pos_GO_data_MF, algorithm = "classic", statistic = "fisher")
 MF_result_Fisher
-#1 terms have raw p<0.01
+# 0 terms have raw p<0.01
 
 MF_list <- usedGO(object = pos_GO_data_MF)
 
 MF_fisher_only <- GenTable(pos_GO_data_MF, classicFisher = MF_result_Fisher, orderBy = "classicFisher", ranksOf = "classicFisher", topNodes = length(MF_list))
-#write.table(BP_fisher_only, file = "BP_fisher_only_nodesize_10.txt") 
+write.table(MF_fisher_only, file = "MF_fisher_only_nodesize_10_Dec10.txt") 
 
 MF_corrected <- p.adjust(MF_fisher_only$classicFisher, method = "fdr")
 MF_corrected <- as.data.frame(MF_corrected)
@@ -166,18 +173,18 @@ sig_genes_BP <- sigGenes(neg_GO_data_BP)
 str(sig_genes_BP)
 #Number of significantly enriched genes for Biological Processes 
 numSigGenes(neg_GO_data_BP)
-#10
+#41
 
 #Run Fisher's Exact Test for Biological Processes 
 #Note that this does not correct for multiple comparisons 
 BP_result_Fisher <- runTest(neg_GO_data_BP, algorithm = "classic", statistic = "fisher", )
 BP_result_Fisher
-#13 terms have raw p<0.01
+#3 terms have raw p<0.01
 
 BP_list <- usedGO(object = neg_GO_data_BP)
 
 BP_fisher_only <- GenTable(neg_GO_data_BP, classicFisher = BP_result_Fisher, orderBy = "classicFisher", ranksOf = "classicFisher", topNodes = length(BP_list))
-#write.table(BP_fisher_only, file = "BP_fisher_only_nodesize_10.txt") 
+write.table(BP_fisher_only, file = "BP_fisher_only_NEG_nodesize_10_Dec10.txt") 
 
 BP_corrected <- p.adjust(BP_fisher_only$classicFisher, method = "fdr")
 BP_corrected <- as.data.frame(BP_corrected)
@@ -196,18 +203,18 @@ sig_genes_CC <- sigGenes(neg_GO_data_CC)
 str(sig_genes_CC)
 #Number of significantly enriched genes for Biological Processes 
 numSigGenes(neg_GO_data_CC)
-#8
+#85
 
 #Run Fisher's Exact Test for Biological Processes 
 #Note that this does not correct for multiple comparisons 
 CC_result_Fisher <- runTest(neg_GO_data_CC, algorithm = "classic", statistic = "fisher", )
 CC_result_Fisher
-#1 terms have raw p<0.01
+#4 terms have raw p<0.01
 
 CC_list <- usedGO(object = neg_GO_data_CC)
 
 CC_fisher_only <- GenTable(neg_GO_data_CC, classicFisher = CC_result_Fisher, orderBy = "classicFisher", ranksOf = "classicFisher", topNodes = length(CC_list))
-#write.table(BP_fisher_only, file = "BP_fisher_only_nodesize_10.txt") 
+write.table(CC_fisher_only, file = "CC_fisher_only_nodesize_10_NEG_Dec10.txt") 
 
 CC_corrected <- p.adjust(CC_fisher_only$classicFisher, method = "fdr")
 CC_corrected <- as.data.frame(CC_corrected)
@@ -227,13 +234,13 @@ sig_genes_MF <- sigGenes(pos_GO_data_MF)
 str(sig_genes_MF)
 #Number of significantly enriched genes for Biological Processes 
 numSigGenes(pos_GO_data_MF)
-#17
+#27
 
 #Run Fisher's Exact Test for Biological Processes 
 #Note that this does not correct for multiple comparisons 
 MF_result_Fisher <- runTest(neg_GO_data_MF, algorithm = "classic", statistic = "fisher", )
 MF_result_Fisher
-#3 terms have raw p<0.01
+#0 terms have raw p<0.01
 
 MF_list <- usedGO(object = neg_GO_data_MF)
 
